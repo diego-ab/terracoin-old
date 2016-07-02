@@ -9,18 +9,14 @@
 #include "chain.h"
 #include "primitives/block.h"
 #include "uint256.h"
+#include "util.h"
 
-unsigned int GetBasicWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    // Genesis block
-    if (pindexLast == NULL)
-        return nProofOfWorkLimit;
-
     int64_t retargetBlockCountInterval;
     int64_t lookupBlockCount;
-
     if (pindexLast->nHeight > 192237) {
         // after block 192240, switch to 540 retarget-window
         // with 1.25 limits
@@ -35,20 +31,17 @@ unsigned int GetBasicWorkRequired(const CBlockIndex* pindexLast, const CBlockHea
     const int64_t retargetVsInspectRatio = lookupBlockCount / retargetBlockCountInterval; // currently 12
 
     // non-retargetting block: keep same diff:
-    if ((pindexLast->nHeight+1) % retargetBlockCountInterval != 0 || (pindexLast->nHeight) < lookupBlockCount) {
+    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0 || (pindexLast->nHeight < lookupBlockCount)) {
         return (pindexLast->nBits);
     }
 
-    // retargetting block, capture timing over last lookupBlockCount blocks:
-    const CBlockIndex* pindexFirst = pindexLast;
-    for (int i = 0; pindexFirst && i < lookupBlockCount ; i++) {
-        pindexFirst = pindexFirst->pprev;
-    }
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(pindexLast->nHeight - lookupBlockCount);
     assert(pindexFirst);
+
+    // Limit adjustment step
     int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
     nActualTimespan = nActualTimespan / retargetVsInspectRatio;
 
-    // limit target adjustments:
     if (pindexLast->nHeight > 192237) {
         // at and after block 192240, use 1.25 limits:
         if (nActualTimespan < retargetTimespan / 1.25) {
@@ -69,7 +62,9 @@ unsigned int GetBasicWorkRequired(const CBlockIndex* pindexLast, const CBlockHea
     // Retarget
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
+    arith_uint256 bnOld;
     bnNew.SetCompact(pindexLast->nBits);
+    bnOld = bnNew;
     bnNew *= nActualTimespan;
     bnNew /= retargetTimespan;
 
@@ -95,14 +90,15 @@ unsigned int GetBasicWorkRequired(const CBlockIndex* pindexLast, const CBlockHea
         }
     }
 
-    if (bnNew > bnPowLimit)
-        bnNew = bnPowLimit;
+    if (bnNew > nProofOfWorkLimit)
+        bnNew = nProofOfWorkLimit;
 
     return bnNew.GetCompact();
 }
-
-unsigned int GetEmaNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+unsigned int GetNextWorkRequiredEMA(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+
     // ugly hack for some 32-bits machines @ block 137162
     if (pindexLast->nHeight == 137161) {
         return (0x1b034c51);
@@ -116,41 +112,34 @@ unsigned int GetEmaNextWorkRequired(const CBlockIndex* pindexLast, const CBlockH
     float accumulator = 120;
     const int64_t perBlockTargetTimespan = 120; // two mins between blocks
 
-    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
- 
-   // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
 
     if (pblock->nTime > pindexLast->nTime + perBlockTargetTimespan*10) {
-        if (pindexLast->nHeight < 175000) {
-            // livenet ; will allow diff/2 unless exiting from apr 9th 2013 stalled state:
-            arith_uint256 bnNew;
-            bnNew.SetCompact(pindexLast->nBits);
+	if (pindexLast->nHeight < 175000)
+	{
+		arith_uint256 bnNew;
+		bnNew.SetCompact(pindexLast->nBits);
 
-            if (pindexLast->nHeight> 101631 && pindexLast->nHeight < 103791) {
-                //insane difficulty drop ; until the network gets big enough, and not abused anymore
-                bnNew *= 10;
-            } else {
-                // half the last diff, sucks too, but with a big enough network,
-                // no block should take 20 minutes to be mined!
-                bnNew *= 2;
-            }
+		if (pindexLast->nHeight> 101631 && pindexLast->nHeight < 103791) {
+			bnNew *= 10;
+		} else {
+			bnNew *= 2;
+		}
 
-            // super ugly way to never, ever return diff < 5254:
-            if (pindexLast->nHeight > 104290) {
-                arith_uint256 fiveThousandsLimit;
-                fiveThousandsLimit.SetCompact(0x1b0c7898);
-                if (bnNew > fiveThousandsLimit) {
-                    bnNew = fiveThousandsLimit;
-                }
-            }
+		// super ugly way to never, ever return diff < 5254:
+		if (pindexLast->nHeight > 104290) {
+			arith_uint256 fiveThousandsLimit;
+			fiveThousandsLimit.SetCompact(0x1b0c7898);
+			if (bnNew > fiveThousandsLimit) {
+				bnNew = fiveThousandsLimit;
+			}
+		}
 
-            if (bnNew > nProofOfWorkLimit)
-                bnNew = nProofOfWorkLimit;
-
-            return (bnNew.GetCompact());
-        }
+		if (bnNew > nProofOfWorkLimit)
+		    bnNew = nProofOfWorkLimit;
+		return bnNew.GetCompact();
+	}
     }
 
     // collect last 3 days (30*24*3=2160) blocks durations:
@@ -180,13 +169,15 @@ unsigned int GetEmaNextWorkRequired(const CBlockIndex* pindexLast, const CBlockH
     // compute exponential moving average block duration:
     for (int i=0; i<2160 ; i++) {
         accumulator = (alpha * block_durations[i]) + (1 - alpha) * accumulator;
-    }
 
+    }
     int64_t nActualTimespan = accumulator;
+
     if (nActualTimespan < perBlockTargetTimespan / 2)
         nActualTimespan = perBlockTargetTimespan / 2;
+
     if (pindexLast->nHeight > 110322) {
-        // symetrical adjustments, both sides:
+	// symetrical adjustments, both sides:
         if (nActualTimespan > perBlockTargetTimespan * 2) {
             nActualTimespan = perBlockTargetTimespan * 2;
         }
@@ -197,8 +188,11 @@ unsigned int GetEmaNextWorkRequired(const CBlockIndex* pindexLast, const CBlockH
     }
 
     // Retarget
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
+    arith_uint256 bnOld;
     bnNew.SetCompact(pindexLast->nBits);
+    bnOld = bnNew;
     bnNew *= nActualTimespan;
     bnNew /= perBlockTargetTimespan;
 
@@ -217,24 +211,14 @@ unsigned int GetEmaNextWorkRequired(const CBlockIndex* pindexLast, const CBlockH
     return bnNew.GetCompact();
 
 }
-unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+
+unsigned int GetNextWorkRequiredV1(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
     // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
-
-
-    // back to a basic retargetting, over longer periods:
-    if (pindexLast->nHeight > 181200) {
-        return (GetBasicWorkRequired(pindexLast, pblock, params));
-    }
- 
-    if (pindexLast->nHeight > 101631) {
-        // activate ema after block 101631
-        return (GetEmaNextWorkRequired(pindexLast, pblock, params));
-    }
 
     // Only change once per difficulty adjustment interval
     if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0)
@@ -258,16 +242,57 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return pindexLast->nBits;
     }
 
-    // Go back by what we want to be 1 hour worth of blocks:
-    int nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval()-1);
+    // Go back by what we want to be 1 hourworth of blocks
+    int nBlocksLookupRange = params.DifficultyAdjustmentInterval()-1;
     if (pindexLast->nHeight > 99988) {
-            nHeightFirst = pindexLast->nHeight - (params.DifficultyAdjustmentInterval() * 24);
+	nBlocksLookupRange = params.DifficultyAdjustmentInterval()  * 24;
     }
-    assert(nHeightFirst >= 0);
-    const CBlockIndex* pindexFirst = pindexLast->GetAncestor(nHeightFirst);
+    const CBlockIndex* pindexFirst = pindexLast->GetAncestor( pindexLast->nHeight - nBlocksLookupRange);
     assert(pindexFirst);
 
-    return CalculateNextWorkRequired(pindexLast, pindexFirst->GetBlockTime(), params);
+    // Limit adjustment step
+    int64_t nActualTimespan = pindexLast->GetBlockTime() - pindexFirst->GetBlockTime();
+    if (pindexLast->nHeight > 101908) {
+        nActualTimespan = nActualTimespan / 3;
+    } else if (pindexLast->nHeight > 99988) {
+        nActualTimespan = nActualTimespan / 24;
+    }
+    LogPrintf("  nActualTimespan = %d  before bounds\n", nActualTimespan);
+    if (nActualTimespan < params.nPowTargetTimespan/4)
+        nActualTimespan = params.nPowTargetTimespan/4;
+    if (nActualTimespan > params.nPowTargetTimespan*4)
+        nActualTimespan = params.nPowTargetTimespan*4;
+
+    // Retarget
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+    arith_uint256 bnNew;
+    arith_uint256 bnOld;
+    bnNew.SetCompact(pindexLast->nBits);
+    bnOld = bnNew;
+    bnNew *= nActualTimespan;
+    bnNew /= params.nPowTargetTimespan;
+
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
+
+    /// debug print
+    LogPrintf("GetNextWorkRequired RETARGET\n");
+    LogPrintf("params.nPowTargetTimespan = %d    nActualTimespan = %d\n", params.nPowTargetTimespan, nActualTimespan);
+    LogPrintf("Before: %08x  %s\n", pindexLast->nBits, bnOld.ToString());
+    LogPrintf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.ToString());
+
+    return bnNew.GetCompact();
+}
+
+unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
+{
+    if (pindexLast->nHeight > 101631) {
+	return GetNextWorkRequiredEMA(pindexLast, pblock, params);
+    } 
+    //else if (pindexLast->nHeight > 181200) {
+        //return GetBasicNextWorkRequired(pindexLast, pblock, params);
+    //}
+    return GetNextWorkRequiredV1(pindexLast, pblock, params);
 }
 
 unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)
