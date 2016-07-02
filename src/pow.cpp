@@ -11,7 +11,7 @@
 #include "uint256.h"
 #include "util.h"
 
-unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
+unsigned int static DarkGravityWave(const CBlockIndex* pindexLast, const Consensus::Params& params) {
     /* current difficulty formula, dash - DarkGravity v3, written by Evan Duffield - evan@dashpay.io */
     const CBlockIndex *BlockLastSolved = pindexLast;
     const CBlockIndex *BlockReading = pindexLast;
@@ -20,8 +20,8 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
     int64_t PastBlocksMin = 24;
     int64_t PastBlocksMax = 24;
     int64_t CountBlocks = 0;
-    uint256 PastDifficultyAverage;
-    uint256 PastDifficultyAveragePrev;
+    arith_uint256 PastDifficultyAverage;
+    arith_uint256 PastDifficultyAveragePrev;
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
 
@@ -35,7 +35,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
 
         if(CountBlocks <= PastBlocksMin) {
             if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
-            else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks) + (uint256().SetCompact(BlockReading->nBits))) / (CountBlocks + 1); }
+            else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks) + (arith_uint256().SetCompact(BlockReading->nBits))) / (CountBlocks + 1); }
             PastDifficultyAveragePrev = PastDifficultyAverage;
         }
 
@@ -49,7 +49,7 @@ unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
         BlockReading = BlockReading->pprev;
     }
 
-    uint256 bnNew(PastDifficultyAverage);
+    arith_uint256 bnNew(PastDifficultyAverage);
 
     int64_t _nTargetTimespan = CountBlocks * params.nPowTargetSpacing;
 
@@ -326,10 +326,10 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return GetNextWorkRequiredEMA(pindexLast, pblock, params);
     } else if (pindexLast->nHeight == 137161) {
 	return (0x1b034c51);
-    } else if (pindexLast->nHeight > 181200 && pindexLast < 806000) {
+    } else if (pindexLast->nHeight > 181200 && pindexLast->nHeight < 806000) {
         return GetNextWorkRequiredV2(pindexLast, pblock, params);
     } else {
-        return DarkGravityWave(pindexLast);
+        return DarkGravityWave(pindexLast, params);
     }
 
     return GetNextWorkRequiredV2(pindexLast, pblock, params);
