@@ -15,23 +15,19 @@ unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHe
 {
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
 
-    int64_t retargetBlockCountInterval;
-    int64_t lookupBlockCount;
+    int64_t retargetBlockCountInterval = 2160;
+    int64_t lookupBlockCount = 2160;
+
     if (pindexLast->nHeight > 192237) {
-        // after block 192240, switch to 540 retarget-window
-        // with 1.25 limits
         retargetBlockCountInterval = 540; // retarget every 540 blocks
         lookupBlockCount = 540; // past blocks to use for timing
-    } else {
-        retargetBlockCountInterval = 2160; // retarget every 2160 blocks
-        lookupBlockCount = 2160; // past blocks to use for timing
     }
 
     const int64_t retargetTimespan = 120 * retargetBlockCountInterval; // 2 minutes per block
     const int64_t retargetVsInspectRatio = lookupBlockCount / retargetBlockCountInterval; // currently 12
 
     // non-retargetting block: keep same diff:
-    if ((pindexLast->nHeight+1) % params.DifficultyAdjustmentInterval() != 0 || (pindexLast->nHeight < lookupBlockCount)) {
+    if ((pindexLast->nHeight+1) % retargetBlockCountInterval != 0 || (pindexLast->nHeight < lookupBlockCount)) {
         return (pindexLast->nBits);
     }
 
@@ -62,9 +58,7 @@ unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHe
     // Retarget
     const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
-    arith_uint256 bnOld;
     bnNew.SetCompact(pindexLast->nBits);
-    bnOld = bnNew;
     bnNew *= nActualTimespan;
     bnNew /= retargetTimespan;
 
@@ -90,56 +84,50 @@ unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHe
         }
     }
 
-    if (bnNew > nProofOfWorkLimit)
-        bnNew = nProofOfWorkLimit;
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
 
     return bnNew.GetCompact();
 }
 unsigned int GetNextWorkRequiredEMA(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
-
-    // ugly hack for some 32-bits machines @ block 137162
-    if (pindexLast->nHeight == 137161) {
-        return (0x1b034c51);
-    }
-
+    const int64_t perBlockTargetTimespan = 120; // two mins between blocks
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     int64_t block_durations[2160];
     float alpha = 0.09; // closer to 1.0 = faster response to new values
     if (pindexLast->nHeight > 110322) {
         alpha = 0.06;
     }
     float accumulator = 120;
-    const int64_t perBlockTargetTimespan = 120; // two mins between blocks
+    arith_uint256 fiveThousandsLimit;
+    fiveThousandsLimit.SetCompact(0x1b0c7898);
 
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
 
-    if (pblock->nTime > pindexLast->nTime + perBlockTargetTimespan*10) {
-	if (pindexLast->nHeight < 175000)
-	{
-		arith_uint256 bnNew;
-		bnNew.SetCompact(pindexLast->nBits);
-
-		if (pindexLast->nHeight> 101631 && pindexLast->nHeight < 103791) {
-			bnNew *= 10;
-		} else {
-			bnNew *= 2;
-		}
-
-		// super ugly way to never, ever return diff < 5254:
-		if (pindexLast->nHeight > 104290) {
-			arith_uint256 fiveThousandsLimit;
-			fiveThousandsLimit.SetCompact(0x1b0c7898);
-			if (bnNew > fiveThousandsLimit) {
-				bnNew = fiveThousandsLimit;
-			}
-		}
-
-		if (bnNew > nProofOfWorkLimit)
-		    bnNew = nProofOfWorkLimit;
-		return bnNew.GetCompact();
+    if (pindexLast->nHeight < 175000 && pblock->nTime > (pindexLast->nTime + perBlockTargetTimespan*10)) {
+	arith_uint256 bnNew;
+	bnNew.SetCompact(pindexLast->nBits);
+	if (pindexLast->nHeight > 101631 && pindexLast->nHeight < 103791) {
+	    LogPrintf("GetNextWorkRequiredEMA Inflated Diff\n");
+	    bnNew *= 10;
+	} else {
+	    bnNew *= 2;
 	}
+
+	// super ugly way to never, ever return diff < 5254:
+	if (pindexLast->nHeight > 104290) {
+	    if (bnNew > fiveThousandsLimit) {
+		bnNew = fiveThousandsLimit;
+	    }
+	}	
+
+
+	if (bnNew > bnPowLimit)
+	    bnNew = bnPowLimit;
+    	LogPrintf("GetNextWorkRequiredEMA RETARGET\n");
+	return bnNew.GetCompact();
     }
 
     // collect last 3 days (30*24*3=2160) blocks durations:
@@ -169,47 +157,36 @@ unsigned int GetNextWorkRequiredEMA(const CBlockIndex* pindexLast, const CBlockH
     // compute exponential moving average block duration:
     for (int i=0; i<2160 ; i++) {
         accumulator = (alpha * block_durations[i]) + (1 - alpha) * accumulator;
-
     }
+ 
     int64_t nActualTimespan = accumulator;
-
     if (nActualTimespan < perBlockTargetTimespan / 2)
         nActualTimespan = perBlockTargetTimespan / 2;
 
-    if (pindexLast->nHeight > 110322) {
-	// symetrical adjustments, both sides:
-        if (nActualTimespan > perBlockTargetTimespan * 2) {
-            nActualTimespan = perBlockTargetTimespan * 2;
-        }
-    } else {
-        if (nActualTimespan > perBlockTargetTimespan * 4) {
-            nActualTimespan = perBlockTargetTimespan * 4;
-        }
+    if (pindexLast->nHeight > 110322 && nActualTimespan > perBlockTargetTimespan * 2) {
+        nActualTimespan = perBlockTargetTimespan * 2;
+    } else if(nActualTimespan > perBlockTargetTimespan * 4) {
+        nActualTimespan = perBlockTargetTimespan * 4;
     }
 
     // Retarget
-    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
     arith_uint256 bnNew;
-    arith_uint256 bnOld;
     bnNew.SetCompact(pindexLast->nBits);
-    bnOld = bnNew;
     bnNew *= nActualTimespan;
     bnNew /= perBlockTargetTimespan;
 
+
     // temporary, super ugly way to never, ever return diff < 5254:
     if (pindexLast->nHeight > 104290) {
-        arith_uint256 fiveThousandsLimit;
-        fiveThousandsLimit.SetCompact(0x1b0c7898);
         if (bnNew > fiveThousandsLimit) {
             bnNew = fiveThousandsLimit;
         }
     }
 
-    if (bnNew > nProofOfWorkLimit)
-        bnNew = nProofOfWorkLimit;
-
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
+    LogPrintf("GetNextWorkRequiredEMA RETARGET\n");
     return bnNew.GetCompact();
-
 }
 
 unsigned int GetNextWorkRequiredV1(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
@@ -286,13 +263,17 @@ unsigned int GetNextWorkRequiredV1(const CBlockIndex* pindexLast, const CBlockHe
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
-    if (pindexLast->nHeight > 101631) {
-	return GetNextWorkRequiredEMA(pindexLast, pblock, params);
-    } 
-    //else if (pindexLast->nHeight > 181200) {
-        //return GetBasicNextWorkRequired(pindexLast, pblock, params);
-    //}
-    return GetNextWorkRequiredV1(pindexLast, pblock, params);
+    if (pindexLast->nHeight <= 101631) {
+	return GetNextWorkRequiredV1(pindexLast, pblock, params);
+    } else if (pindexLast->nHeight > 101631 && pindexLast->nHeight != 137161 && pindexLast->nHeight <= 181200) {
+        return GetNextWorkRequiredEMA(pindexLast, pblock, params);
+    } else if (pindexLast->nHeight == 137161) {
+	return (0x1b034c51);
+    } else if (pindexLast->nHeight > 181200) {
+        return GetNextWorkRequiredV2(pindexLast, pblock, params);
+    }
+    return GetNextWorkRequiredV2(pindexLast, pblock, params);
+
 }
 
 unsigned int CalculateNextWorkRequired(const CBlockIndex* pindexLast, int64_t nFirstBlockTime, const Consensus::Params& params)
