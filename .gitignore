@@ -1,12 +1,12 @@
 *.tar.gz
 
 *.exe
-src/bitcoin
-src/bitcoind
-src/bitcoin-cli
-src/bitcoin-tx
-src/test/test_bitcoin
-src/qt/test/test_bitcoin-qt
+src/terracoin
+src/terracoind
+src/terracoin-cli
+src/terracoin-tx
+src/test/test_terracoin
+src/qt/test/test_terracoin-qt
 
 # autoreconf
 Makefile.in
@@ -55,7 +55,7 @@ src/qt/test/moc*.cpp
 *.o
 *.o-*
 *.patch
-.bitcoin
+.terracoin
 *.a
 *.pb.cc
 *.pb.h
@@ -74,12 +74,12 @@ src/qt/test/moc*.cpp
 # Compilation and Qt preprocessor part
 *.qm
 Makefile
-bitcoin-qt
-Bitcoin-Qt.app
+terracoin-qt
+terracoin-Qt.app
 
 # Unit-tests
 Makefile.test
-bitcoin-qt_test
+terracoin-qt_test
 src/test/buildenv.py
 
 # Resources cpp
@@ -93,7 +93,7 @@ build
 *.gcno
 *.gcda
 /*.info
-test_bitcoin.coverage/
+test_terracoin.coverage/
 total.coverage/
 coverage_percent.txt
 
@@ -107,7 +107,7 @@ qa/pull-tester/cache/*
 qa/pull-tester/test.*/*
 qa/tmp
 cache/
-share/BitcoindComparisonTool.jar
+share/terracoindComparisonTool.jar
 
 !src/leveldb*/Makefile
 
