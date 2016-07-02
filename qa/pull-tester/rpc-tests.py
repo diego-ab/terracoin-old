@@ -104,7 +104,8 @@ testScripts = [
     # longest test should go first, to favor running tests in parallel
     'p2p-fullblocktest.py',
     'walletbackup.py',
-    'bip68-112-113-p2p.py',
+    # FIXME: Enable once we activate BIP9.
+    #'bip68-112-113-p2p.py',
     'wallet.py',
     'listtransactions.py',
     'receivedby.py',
@@ -135,11 +136,15 @@ testScripts = [
     'invalidblockrequest.py',
     'invalidtxrequest.py',
     'abandonconflict.py',
-    'p2p-versionbits-warning.py',
-    'p2p-segwit.py',
-    'segwit.py',
+    # FIXME: Reenable and possibly fix once the BIP9 mining is activated.
+    #'p2p-versionbits-warning.py',
+    #'p2p-segwit.py',
+    #'segwit.py',
     'importprunedfunds.py',
     'signmessages.py',
+
+    # auxpow tests
+    'getauxblock.py',
 ]
 if ENABLE_ZMQ:
     testScripts.append('zmq_test.py')
@@ -151,8 +156,6 @@ testScriptsExt = [
     'bip68-sequence.py',
     'bipdersig-p2p.py',
     'bipdersig.py',
-    'getblocktemplate_longpoll.py',
-    'getblocktemplate_proposals.py',
     'txn_doublespend.py',
     'txn_clone.py --mineblock',
     'forknotify.py',

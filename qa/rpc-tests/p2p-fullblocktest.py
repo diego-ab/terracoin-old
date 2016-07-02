@@ -67,7 +67,8 @@ class FullBlockTest(ComparisonTestFramework):
 
     def add_options(self, parser):
         super().add_options(parser)
-        parser.add_option("--runbarelyexpensive", dest="runbarelyexpensive", default=True)
+        # FIXME: Turn default on again, maybe.
+        parser.add_option("--runbarelyexpensive", dest="runbarelyexpensive", default=False)
 
     def run_test(self):
         self.test = TestManager(self, self.options.tmpdir)
