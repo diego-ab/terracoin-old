@@ -11,6 +11,63 @@
 #include "uint256.h"
 #include "util.h"
 
+unsigned int static DarkGravityWave(const CBlockIndex* pindexLast) {
+    /* current difficulty formula, dash - DarkGravity v3, written by Evan Duffield - evan@dashpay.io */
+    const CBlockIndex *BlockLastSolved = pindexLast;
+    const CBlockIndex *BlockReading = pindexLast;
+    int64_t nActualTimespan = 0;
+    int64_t LastBlockTime = 0;
+    int64_t PastBlocksMin = 24;
+    int64_t PastBlocksMax = 24;
+    int64_t CountBlocks = 0;
+    uint256 PastDifficultyAverage;
+    uint256 PastDifficultyAveragePrev;
+    unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
+    const arith_uint256 bnPowLimit = UintToArith256(params.powLimit);
+
+    if (BlockLastSolved == NULL || BlockLastSolved->nHeight == 0 || BlockLastSolved->nHeight < PastBlocksMin) {
+	return nProofOfWorkLimit;
+    }
+
+    for (unsigned int i = 1; BlockReading && BlockReading->nHeight > 0; i++) {
+        if (PastBlocksMax > 0 && i > PastBlocksMax) { break; }
+        CountBlocks++;
+
+        if(CountBlocks <= PastBlocksMin) {
+            if (CountBlocks == 1) { PastDifficultyAverage.SetCompact(BlockReading->nBits); }
+            else { PastDifficultyAverage = ((PastDifficultyAveragePrev * CountBlocks) + (uint256().SetCompact(BlockReading->nBits))) / (CountBlocks + 1); }
+            PastDifficultyAveragePrev = PastDifficultyAverage;
+        }
+
+        if(LastBlockTime > 0){
+            int64_t Diff = (LastBlockTime - BlockReading->GetBlockTime());
+            nActualTimespan += Diff;
+        }
+        LastBlockTime = BlockReading->GetBlockTime();
+
+        if (BlockReading->pprev == NULL) { assert(BlockReading); break; }
+        BlockReading = BlockReading->pprev;
+    }
+
+    uint256 bnNew(PastDifficultyAverage);
+
+    int64_t _nTargetTimespan = CountBlocks * params.nPowTargetSpacing;
+
+    if (nActualTimespan < _nTargetTimespan/3)
+        nActualTimespan = _nTargetTimespan/3;
+    if (nActualTimespan > _nTargetTimespan*3)
+        nActualTimespan = _nTargetTimespan*3;
+
+    // Retarget
+    bnNew *= nActualTimespan;
+    bnNew /= _nTargetTimespan;
+
+    if (bnNew > bnPowLimit)
+        bnNew = bnPowLimit;
+
+    return bnNew.GetCompact();
+}
+
 unsigned int GetNextWorkRequiredV2(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
     unsigned int nProofOfWorkLimit = UintToArith256(params.powLimit).GetCompact();
@@ -269,9 +326,12 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return GetNextWorkRequiredEMA(pindexLast, pblock, params);
     } else if (pindexLast->nHeight == 137161) {
 	return (0x1b034c51);
-    } else if (pindexLast->nHeight > 181200) {
+    } else if (pindexLast->nHeight > 181200 && pindexLast < 806000) {
         return GetNextWorkRequiredV2(pindexLast, pblock, params);
+    } else {
+        return DarkGravityWave(pindexLast);
     }
+
     return GetNextWorkRequiredV2(pindexLast, pblock, params);
 
 }
