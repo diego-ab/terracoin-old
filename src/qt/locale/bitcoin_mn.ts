@@ -57,7 +57,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>TerracoinGUI</name>
     <message>
         <source>Sign &amp;message...</source>
         <translation>&amp;Зурвас хавсаргах...</translation>
@@ -123,7 +123,7 @@
         <translation>Оношилгоо ба засварын консолыг онгойлго</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
+        <source>Terracoin</source>
         <translation>Биткойн</translation>
     </message>
     <message>
@@ -507,7 +507,7 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>terracoin-core</name>
     <message>
         <source>Options:</source>
         <translation>Сонголтууд:</translation>

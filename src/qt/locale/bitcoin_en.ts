@@ -91,9 +91,9 @@
     </message>
 </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>TerracoinGUI</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+341"/>
+        <location filename="../terracoingui.cpp" line="+341"/>
         <source>Sign &amp;message...</source>
         <translation>Sign &amp;message...</translation>
     </message>
@@ -204,8 +204,8 @@
     </message>
     <message>
         <location line="-457"/>
-        <source>Send coins to a Bitcoin address</source>
-        <translation>Send coins to a Bitcoin address</translation>
+        <source>Send coins to a Terracoin address</source>
+        <translation>Send coins to a Terracoin address</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -234,8 +234,8 @@
     </message>
     <message>
         <location line="+481"/>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <location line="-693"/>
@@ -269,13 +269,13 @@
     </message>
     <message>
         <location line="+7"/>
-        <source>Sign messages with your Bitcoin addresses to prove you own them</source>
-        <translation>Sign messages with your Bitcoin addresses to prove you own them</translation>
+        <source>Sign messages with your Terracoin addresses to prove you own them</source>
+        <translation>Sign messages with your Terracoin addresses to prove you own them</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Verify messages to ensure they were signed with specified Bitcoin addresses</source>
-        <translation>Verify messages to ensure they were signed with specified Bitcoin addresses</translation>
+        <source>Verify messages to ensure they were signed with specified Terracoin addresses</source>
+        <translation>Verify messages to ensure they were signed with specified Terracoin addresses</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -299,7 +299,7 @@
     </message>
     <message>
         <location line="-158"/>
-        <source>Request payments (generates QR codes and bitcoin: URIs)</source>
+        <source>Request payments (generates QR codes and terracoin: URIs)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -314,7 +314,7 @@
     </message>
     <message>
         <location line="+3"/>
-        <source>Open a bitcoin: URI or payment request</source>
+        <source>Open a terracoin: URI or payment request</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -324,10 +324,10 @@
     </message>
     <message numerus="yes">
         <location line="+341"/>
-        <source>%n active connection(s) to Bitcoin network</source>
+        <source>%n active connection(s) to Terracoin network</source>
         <translation>
-            <numerusform>%n active connection to Bitcoin network</numerusform>
-            <numerusform>%n active connections to Bitcoin network</numerusform>
+            <numerusform>%n active connection to Terracoin network</numerusform>
+            <numerusform>%n active connections to Terracoin network</numerusform>
         </translation>
     </message>
     <message>
@@ -428,7 +428,7 @@
     </message>
     <message>
         <location line="-388"/>
-        <source>Show the %1 help message to get a list with possible Bitcoin command-line options</source>
+        <source>Show the %1 help message to get a list with possible Terracoin command-line options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -734,7 +734,7 @@
     </message>
     <message>
         <location line="+10"/>
-        <source>%1 will download and store a copy of the Bitcoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
+        <source>%1 will download and store a copy of the Terracoin block chain. At least %2GB of data will be stored in this directory, and it will grow over time. The wallet will also be stored in this directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -918,8 +918,8 @@
     </message>
     <message>
         <location line="+30"/>
-        <source>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
-        <translation>Automatically open the Bitcoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
+        <source>Automatically open the Terracoin client port on the router. This only works when your router supports UPnP and it is enabled.</source>
+        <translation>Automatically open the Terracoin client port on the router. This only works when your router supports UPnP and it is enabled.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -928,7 +928,7 @@
     </message>
     <message>
         <location line="+17"/>
-        <source>Connect to the Bitcoin network through a SOCKS5 proxy.</source>
+        <source>Connect to the Terracoin network through a SOCKS5 proxy.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -983,7 +983,7 @@
     </message>
     <message>
         <location line="+25"/>
-        <source>Connect to the Bitcoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
+        <source>Connect to the Terracoin network through a separate SOCKS5 proxy for Tor hidden services.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1108,8 +1108,8 @@
     <message>
         <location line="+59"/>
         <location line="+386"/>
-        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</source>
-        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Bitcoin network after a connection is established, but this process has not completed yet.</translation>
+        <source>The displayed information may be out of date. Your wallet automatically synchronizes with the Terracoin network after a connection is established, but this process has not completed yet.</source>
+        <translation>The displayed information may be out of date. Your wallet automatically synchronizes with the Terracoin network after a connection is established, but this process has not completed yet.</translation>
     </message>
     <message>
         <location line="-139"/>
@@ -1213,13 +1213,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../bitcoinunits.cpp" line="+176"/>
+        <location filename="../terracoinunits.cpp" line="+176"/>
         <source>Amount</source>
         <translation type="unfinished">Amount</translation>
     </message>
     <message>
         <location filename="../guiutil.cpp" line="+118"/>
-        <source>Enter a Bitcoin address (e.g. %1)</source>
+        <source>Enter a Terracoin address (e.g. %1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1695,7 +1695,7 @@
     <message>
         <location line="+14"/>
         <location line="+23"/>
-        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Bitcoin network.</source>
+        <source>An optional message to attach to the payment request, which will be displayed when the request is opened. Note: The message will not be sent with the payment over the Terracoin network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1890,7 +1890,7 @@
     <message>
         <location line="+30"/>
         <location line="+13"/>
-        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for bitcoin transactions than the network can process.</source>
+        <source>Paying only the minimum fee is just fine as long as there is less transaction volume than space in the blocks. But be aware that this can end up in a never confirming transaction once there is more demand for terracoin transactions than the network can process.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2000,7 +2000,7 @@
     </message>
     <message>
         <location line="+39"/>
-        <source>The Bitcoin address to send the payment to</source>
+        <source>The Terracoin address to send the payment to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2027,7 +2027,7 @@
     </message>
     <message>
         <location line="-1021"/>
-        <source>The fee will be deducted from the amount being sent. The recipient will receive less bitcoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
+        <source>The fee will be deducted from the amount being sent. The recipient will receive less terracoins than you enter in the amount field. If multiple recipients are selected, the fee is split equally.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2057,7 +2057,7 @@
     </message>
     <message>
         <location line="+47"/>
-        <source>A message that was attached to the bitcoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Bitcoin network.</source>
+        <source>A message that was attached to the terracoin: URI which will be stored with the transaction for your reference. Note: This message will not be sent over the Terracoin network.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2100,12 +2100,12 @@
     </message>
     <message>
         <location line="+6"/>
-        <source>You can sign messages/agreements with your addresses to prove you can receive bitcoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
+        <source>You can sign messages/agreements with your addresses to prove you can receive terracoins sent to them. Be careful not to sign anything vague or random, as phishing attacks may try to trick you into signing your identity over to them. Only sign fully-detailed statements you agree to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+18"/>
-        <source>The Bitcoin address to sign the message with</source>
+        <source>The Terracoin address to sign the message with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2147,8 +2147,8 @@
     </message>
     <message>
         <location line="+21"/>
-        <source>Sign the message to prove you own this Bitcoin address</source>
-        <translation>Sign the message to prove you own this Bitcoin address</translation>
+        <source>Sign the message to prove you own this Terracoin address</source>
+        <translation>Sign the message to prove you own this Terracoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2178,13 +2178,13 @@
     </message>
     <message>
         <location line="+21"/>
-        <source>The Bitcoin address the message was signed with</source>
+        <source>The Terracoin address the message was signed with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+37"/>
-        <source>Verify the message to ensure it was signed with the specified Bitcoin address</source>
-        <translation>Verify the message to ensure it was signed with the specified Bitcoin address</translation>
+        <source>Verify the message to ensure it was signed with the specified Terracoin address</source>
+        <translation>Verify the message to ensure it was signed with the specified Terracoin address</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2224,15 +2224,15 @@
 <context>
     <name>UnitDisplayStatusBarControl</name>
     <message>
-        <location filename="../bitcoingui.cpp" line="+116"/>
+        <location filename="../terracoingui.cpp" line="+116"/>
         <source>Unit to show amounts in. Click to select another unit.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>terracoin-core</name>
     <message>
-        <location filename="../bitcoinstrings.cpp" line="+298"/>
+        <location filename="../terracoinstrings.cpp" line="+298"/>
         <source>Options:</source>
         <translation>Options:</translation>
     </message>
@@ -2313,8 +2313,8 @@
     </message>
     <message>
         <location line="-212"/>
-        <source>Bitcoin Core</source>
-        <translation type="unfinished">Bitcoin Core</translation>
+        <source>Terracoin Core</source>
+        <translation type="unfinished">Terracoin Core</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -53,7 +53,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>TerracoinGUI</name>
     <message>
         <source>Synchronizing with network...</source>
         <translation>Sincronizando con la red...</translation>
@@ -107,7 +107,7 @@
         <translation>Recibiendo direcciones</translation>
     </message>
     <message>
-        <source>Send coins to a Bitcoin address</source>
+        <source>Send coins to a Terracoin address</source>
         <translation>Enviar monedas a una dirección BItCoin</translation>
     </message>
     <message>
@@ -115,8 +115,8 @@
         <translation>Cambie la clave utilizada para el cifrado del monedero</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -406,7 +406,7 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>terracoin-core</name>
     <message>
         <source>Options:</source>
         <translation>Opciones:</translation>

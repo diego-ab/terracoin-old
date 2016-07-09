@@ -65,7 +65,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>TerracoinGUI</name>
     <message>
         <source>&amp;Overview</source>
         <translation>&amp;Tổng quan</translation>
@@ -99,8 +99,8 @@
         <translation>Mở &amp;URI...</translation>
     </message>
     <message>
-        <source>Bitcoin</source>
-        <translation>Bitcoin</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Wallet</source>
@@ -431,14 +431,14 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>terracoin-core</name>
     <message>
         <source>Options:</source>
         <translation>Lựa chọn:</translation>
     </message>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Terracoin Core</source>
+        <translation>Terracoin Core</translation>
     </message>
     <message>
         <source>(default: %u)</source>

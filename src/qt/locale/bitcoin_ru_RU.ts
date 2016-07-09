@@ -45,7 +45,7 @@
     <name>BanTableModel</name>
     </context>
 <context>
-    <name>BitcoinGUI</name>
+    <name>TerracoinGUI</name>
     <message>
         <source>&amp;Command-line options</source>
         <translation>Опции командной строки</translation>
@@ -171,10 +171,10 @@
     <name>UnitDisplayStatusBarControl</name>
     </context>
 <context>
-    <name>bitcoin-core</name>
+    <name>terracoin-core</name>
     <message>
-        <source>Bitcoin Core</source>
-        <translation>Bitcoin Core</translation>
+        <source>Terracoin Core</source>
+        <translation>Terracoin Core</translation>
     </message>
     <message>
         <source>Information</source>
