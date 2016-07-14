@@ -1707,7 +1707,7 @@
         <translation>외부 접속을 승인합니다</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>비트코인 코어</translation>
     </message>
     <message>

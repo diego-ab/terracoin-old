@@ -457,8 +457,8 @@
         <translation>Opsiynau:</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Craidd Terracoin</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Information</source>

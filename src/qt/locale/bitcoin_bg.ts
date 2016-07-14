@@ -1307,7 +1307,7 @@
         <translation>Приемайте връзки отвън.(по подразбиране:1 в противен случай -proxy или -connect)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>Биткойн ядро</translation>
     </message>
     <message>

@@ -1327,8 +1327,8 @@
         <translation>Fonctionner en arrière-plan en tant que démon et accepter les commandes</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin Core</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>

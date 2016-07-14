@@ -1215,8 +1215,8 @@
         <translation>Akcepti konektojn el ekstere (defaŭlte: 1 se ne estas -proxy nek -connect)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Kerno de Bitmono</translation>
+        <source>Terracoin</source>
+        <translation>Terramono</translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>

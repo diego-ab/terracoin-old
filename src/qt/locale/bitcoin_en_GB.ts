@@ -1799,8 +1799,8 @@
         <translation>Accept connections from outside (default: 1 if no -proxy or -connect)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin Core</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>The %s developers</source>

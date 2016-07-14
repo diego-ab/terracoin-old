@@ -1775,7 +1775,7 @@
         <translation>Aceitar conexões externas (padrão: 1 se opções -proxy ou -connect não estiverem presentes)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>Terracoin</translation>
     </message>
     <message>

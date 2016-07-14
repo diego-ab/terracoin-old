@@ -19,13 +19,13 @@ BEGIN
         BLOCK "040904E4" // U.S. English - multilingual (hex)
         BEGIN
             VALUE "CompanyName",        "Terracoin"
-            VALUE "FileDescription",    "Terracoin Core (GUI node for Terracoin)"
+            VALUE "FileDescription",    "Terracoin (GUI node for Terracoin)"
             VALUE "FileVersion",        VER_FILEVERSION_STR
             VALUE "InternalName",       "terracoin-qt"
             VALUE "LegalCopyright",     COPYRIGHT_STR
             VALUE "LegalTrademarks1",   "Distributed under the MIT software license, see the accompanying file COPYING or http://www.opensource.org/licenses/mit-license.php."
             VALUE "OriginalFilename",   "terracoin-qt.exe"
-            VALUE "ProductName",        "Terracoin Core"
+            VALUE "ProductName",        "Terracoin"
             VALUE "ProductVersion",     VER_PRODUCTVERSION_STR
         END
     END

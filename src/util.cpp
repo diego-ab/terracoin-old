@@ -805,7 +805,7 @@ std::string CopyrightHolders(const std::string& strPrefix)
     if (strCopyrightHolders.find("%s") != strCopyrightHolders.npos) {
         strCopyrightHolders = strprintf(strCopyrightHolders, _(COPYRIGHT_HOLDERS_SUBSTITUTION));
     }
-    if (strCopyrightHolders.find("Terracoin Core developers") == strCopyrightHolders.npos) {
+    if (strCopyrightHolders.find("Terracoin developers") == strCopyrightHolders.npos) {
         strCopyrightHolders += "\n" + strPrefix + "Developed By Ahmed Bodiwala";
     }
     return strCopyrightHolders;

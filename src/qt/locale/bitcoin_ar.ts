@@ -989,7 +989,7 @@
         <translation>قبول الاتصالات من خارج</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>جوهر البيت كوين</translation>
     </message>
     <message>

@@ -557,8 +557,8 @@
         <translation>Opciones:</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>nucleo Terracoin</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>&lt;category&gt; can be:</source>

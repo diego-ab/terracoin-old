@@ -253,7 +253,7 @@
 <context>
     <name>terracoin-core</name>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>Terracoin Kern</translation>
     </message>
     <message>

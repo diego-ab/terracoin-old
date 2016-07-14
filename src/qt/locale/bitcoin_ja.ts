@@ -1799,8 +1799,8 @@
         <translation>外部からの接続を許可 (初期値:  -proxy または -connect を使用していない場合は1)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin のコア</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>The %s developers</source>

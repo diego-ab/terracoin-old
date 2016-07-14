@@ -1521,7 +1521,7 @@
         <translation>קבלת חיבורים מבחוץ (בררת מחדל: 1 ללא ‎-proxy או ‎-connect)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
+        <source>Terracoin</source>
         <translation>ליבת ביטקוין</translation>
     </message>
     <message>

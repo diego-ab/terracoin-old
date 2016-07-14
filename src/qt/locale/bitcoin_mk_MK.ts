@@ -567,8 +567,8 @@
         <translation>Опции:</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Биткоин Core</translation>
+        <source>Terracoin</source>
+        <translation>Биткоин </translation>
     </message>
     <message>
         <source>Warning</source>

@@ -905,8 +905,8 @@
         <translation>Dirbti fone kaip šešėlyje ir priimti komandas</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin branduolys</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Connect only to the specified node(s)</source>

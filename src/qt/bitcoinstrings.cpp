@@ -9,7 +9,7 @@
 #define UNUSED
 #endif
 static const char UNUSED *terracoin_strings[] = {
-QT_TRANSLATE_NOOP("terracoin-core", "Terracoin Core"),
+QT_TRANSLATE_NOOP("terracoin-core", "Terracoin"),
 QT_TRANSLATE_NOOP("terracoin-core", "The Terracoin Foundation"),
 QT_TRANSLATE_NOOP("terracoin-core", ""
 "(1 = keep tx meta data e.g. account owner and payment request information, 2 "

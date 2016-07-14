@@ -745,8 +745,8 @@
 </translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation>terracoin core</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Connect only to the specified node(s)</source>

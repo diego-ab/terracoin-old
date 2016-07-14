@@ -1163,8 +1163,8 @@
         <translation>پذیرش اتصالات از بیرون (پیش فرض:1 بدون پراکسی یا اتصال)</translation>
     </message>
     <message>
-        <source>Terracoin Core</source>
-        <translation> هسته Terracoin </translation>
+        <source>Terracoin</source>
+        <translation>Terracoin </translation>
     </message>
     <message>
         <source>Bind to given address and always listen on it. Use [host]:port notation for IPv6</source>

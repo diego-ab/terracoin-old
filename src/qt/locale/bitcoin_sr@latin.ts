@@ -161,8 +161,8 @@
 <context>
     <name>terracoin-core</name>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin Core</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>Insufficient funds</source>

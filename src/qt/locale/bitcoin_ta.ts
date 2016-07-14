@@ -665,8 +665,8 @@
 <context>
     <name>terracoin-core</name>
     <message>
-        <source>Terracoin Core</source>
-        <translation>Terracoin மையம்</translation>
+        <source>Terracoin</source>
+        <translation>Terracoin</translation>
     </message>
     <message>
         <source>(default: %u)</source>

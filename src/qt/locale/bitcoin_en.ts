@@ -2313,8 +2313,8 @@
     </message>
     <message>
         <location line="-212"/>
-        <source>Terracoin Core</source>
-        <translation type="unfinished">Terracoin Core</translation>
+        <source>Terracoin</source>
+        <translation type="unfinished">Terracoin</translation>
     </message>
     <message>
         <location line="+1"/>
