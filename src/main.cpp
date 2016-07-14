@@ -3637,12 +3637,15 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
     if (block.GetBlockTime() > nAdjustedTime + 2 * 60 * 60)
         return state.Invalid(false, REJECT_INVALID, "time-too-new", "block timestamp too far in the future");
 
+    /*
+    // We have no choice but to disable this check. There appears to be a mining pool giving some sort of invalid block number
     // Reject outdated version blocks when 95% (75% on testnet) of the network has upgraded:
     for (int32_t version = 2; version < 5; ++version) // check for version 2, 3 and 4 upgrades
         if (block.GetBaseVersion() < version && IsSuperMajority(version, pindexPrev, consensusParams.nMajorityRejectBlockOutdated, consensusParams))
             return state.Invalid(false, REJECT_OBSOLETE, strprintf("bad-version(v%d)", version - 1),
                                  strprintf("rejected nVersion=0x%08x block", version - 1));
 
+    */
     return true;
 }
 
