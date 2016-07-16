@@ -148,7 +148,7 @@ public:
      */
     inline bool IsLegacy() const
     {
-	return nVersion <= 2;
+	return nVersion <= 536870912;
     }
 };
 
