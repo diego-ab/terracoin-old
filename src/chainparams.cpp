@@ -98,9 +98,9 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Never / undefined
 
         consensus.nAuxpowChainId = 0x0032;
-        consensus.nAuxpowStartHeight = 806000;
+        consensus.nAuxpowStartHeight = 821700;
         consensus.fStrictChainId = true;
-        consensus.nLegacyBlocksBefore = 806000;
+        consensus.nLegacyBlocksBefore = 821700;
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
