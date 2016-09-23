@@ -326,7 +326,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
         return GetNextWorkRequiredEMA(pindexLast, pblock, params);
     } else if (pindexLast->nHeight == 137161) {
 	return (0x1b034c51);
-    } else if (pindexLast->nHeight > 181200 && pindexLast->nHeight < 821700) {
+    } else if (pindexLast->nHeight > 181200 && pindexLast->nHeight < 833000) {
         return GetNextWorkRequiredV2(pindexLast, pblock, params);
     } else {
         return DarkGravityWave(pindexLast, params);
