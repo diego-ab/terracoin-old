@@ -119,10 +119,7 @@ public:
         assert(consensus.hashGenesisBlock == uint256S("0x00000000804bbc6a621a9dbb564ce469f492e1ccf2d70f8a6b241e26a277afa2"));
         assert(genesis.hashMerkleRoot == uint256S("0x0f8b09f93803b067580c16c3f3a6aaa901be06ad892cea9f02d8a4f93628f196"));
 
-	vSeeds.push_back(CDNSSeedData("seed1.net.terracoin.org", "seed1.net.terracoin.org"));
-        vSeeds.push_back(CDNSSeedData("seed2.net.terracoin.org", "seed2.net.terracoin.org"));
-        vSeeds.push_back(CDNSSeedData("seed3.net.terracoin.org", "seed3.net.terracoin.org"));
-
+	vSeeds.push_back(CDNSSeedData("seed.terracoin.info", "seed.terracoin.info"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,0);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
