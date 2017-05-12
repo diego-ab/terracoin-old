@@ -1,12 +1,6 @@
 sudo: required
 dist: trusty
 
-# FIXME: Can we re-enable the comparison tool somehow for Namecoin?
-
-#workaround for https://github.com/travis-ci/travis-ci/issues/5227
-addons:
-  hostname: bitcoin-tester
-
 os: linux
 language: generic
 cache:
