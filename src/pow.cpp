@@ -323,7 +323,7 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 {
     if(Params().NetworkIDString() != CBaseChainParams::MAIN)
     {
-        if (pindexLast->nHeight <= 50000)
+        if (pindexLast->nHeight <= 10000)
             return (0x1d00ffff); //Get testnet started quickly
         else
             return (0x1c018616); //diff 168
