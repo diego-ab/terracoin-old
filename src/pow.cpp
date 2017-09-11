@@ -7,6 +7,7 @@
 
 #include "arith_uint256.h"
 #include "chain.h"
+#include "chainparams.h"
 #include "primitives/block.h"
 #include "uint256.h"
 #include "util.h"
@@ -320,6 +321,14 @@ unsigned int GetNextWorkRequiredV1(const CBlockIndex* pindexLast, const CBlockHe
 
 unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock, const Consensus::Params& params)
 {
+    if(Params().NetworkIDString() != CBaseChainParams::MAIN)
+    {
+        if (pindexLast->nHeight <= 50000)
+            return (0x1d00ffff); //Get testnet started quickly
+        else
+            return (0x1c018616); //diff 168
+    }
+
     if (pindexLast->nHeight <= 101631) {
 	return GetNextWorkRequiredV1(pindexLast, pblock, params);
     } else if (pindexLast->nHeight > 101631 && pindexLast->nHeight != 137161 && pindexLast->nHeight <= 181200) {
